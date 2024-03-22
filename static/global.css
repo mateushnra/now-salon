@@ -1,0 +1,12 @@
+:root{
+    --color-gray: #000000;
+}
+
+body{
+    background-color: rgb(247, 108, 80);
+}
+
+h1{
+    color: rgb(120, 237, 81);
+}
+
