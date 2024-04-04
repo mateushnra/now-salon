@@ -1,0 +1,37 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{% block title %}Portal funcionários{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/portal.css' %}" >
+{% endblock style%}
+
+{% block header %}
+    {% include 'components/header.html'%}
+{% endblock header %}
+
+{% block content %}
+    <main class="container">
+        <form id="form-employee-login" class="formPortalContainer">
+            {% csrf_token %}
+            <h1 class="titlePortal">Portal Funcionários</h1>
+            <div class="portalInputsContainer">
+                <div class="inputContainer">
+                    <label for="register-id">Matricula</label>
+                    <input type="number" id="register-id" name="register-id"/>
+                    <span id="error-register-id"></span>
+                </div>
+                <div class="inputContainer">
+                    <label for="password">Matricula</label>
+                    <input type="password" id="password" name="password"/>
+                    <span id="error-password"></span>
+                </div>
+            </div>
+            <button class="btnLoginEmployee" type='submit'>Acessar sistema</button>
+
+            <p id="error-form-employee-login" class="errorMessageLogin"></p>
+        </form>
+    </main>
+    <script type="module" src={% static 'scripts/portal.js'%}></script>
+{% endblock content %}

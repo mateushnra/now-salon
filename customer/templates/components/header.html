@@ -1,0 +1,110 @@
+{% load static %}
+
+<header class="header" id="header-container">
+    <div>
+        <nav class="infoHeaderContainer" aria-label='Navegação portal'>
+            <ul class="infoList">
+                <li>
+                    <strong>Aberto terça, quarta, quinta, sexta e sábado</strong>
+                </li>
+                <li>
+                    <strong>Horários: 8:00 até 18:00</strong>
+                </li>
+            </ul>
+            {% if not customerLoggedIn %}
+                <a href="{% url 'portal'%}">Portal funcionários</a>
+            {% endif %}   
+        </nav>
+    </div>
+    <div>
+        <nav class="containerPrimaryNavigation" aria-label='Primária'>
+            <div class="primaryNavigation">
+                <div class="containerMenuMobile">
+                    <a href="{% url 'index'%}">
+                        <img 
+                            src="{% static 'images/logoScissorsIcon.png' %}"
+                            alt="Logo now salon"
+                            aria-roledescription='link para a home'
+                            role='link'
+                        />
+                        <strong class="logoDark">Now Salon</strong>
+                    </a>
+                    <div class="menuHamburger" id="button-hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                
+                <ul id="dropdown-menu-mobile-primary" class="navList">
+                    <li><a href='#home'>Home</a></li>
+                    <li><a href='#contato'>Contato</a></li>
+                    <li><a href='#agendar'>Agendar</a></li>
+                    {% if customerLoggedIn %}
+                        <li><a href='#agendamentos'>Meus agendamentos</a></li>
+                    {% endif %}   
+                </ul>
+            </div>
+
+            <div id="dropdown-menu-mobile-secondary">
+            {% if customerLoggedIn %}
+                <div id="user-container" class="userContainer">
+                    <span id="button-dropdown" class="userIconBackground">
+                        <img 
+                            src="{% static 'images/icons/userIcon.svg' %}"
+                            alt="Ícone usuário"
+                            aria-roledescription='Abre opções do usuário'
+                        />
+                    </span>
+
+                    <div id="dropdown-list">
+                        <a href={% url 'logout' %}>Sair</a>
+                    </div>
+                </div>
+            {% endif %}   
+            
+            {% if not customerLoggedIn %}
+                <button id="btnOpen">Entrar</button>
+            {% endif %}    
+            </div>
+        </nav>
+    </div>  
+</header>
+
+<form id="form-login-customer" method="post" class="containerModalLogin">
+    {% csrf_token %}
+    <button class="btnCloseModal" id="btnClose">
+        <img 
+            src="{% static 'images/icons/circle-x.svg' %}"
+            alt="Ícone usuário"
+            aria-roledescription='Abre opções do usuário'
+            role="button"
+        />
+    </button>
+
+    <strong class="titleLogin">Login<span class="detailTitleLogin"></strong>
+    <p class="descriptionLogin">Acesse a sua conta para agendar novos serviços</p>
+
+    <div class="containerFields">
+        <div class="inputContainer">
+            <label for="email-login">Email</label>
+            <input type="text" id="email-login" name="email-login"/>
+            <span id="error-email-login"></span>
+        </div>
+        <div class="inputContainer">
+            <label for="password-login">Senha</label>
+            <input type="password" id="password-login" name="password-login"/>
+            <span id="error-password-login"></span>
+        </div>
+    </div>
+
+    <button class="btnConfirmLogin" type='submit'>Entrar</button>
+
+    <p id="error-login" class="errorMessageLogin"></p>
+
+    <a class="linkSignUp" href="{% url 'signup'%}">Não tenho conta no Now Salon</a>
+</form>        
+
+<div id="modalWrapper" class="modalWrapper"></div>
+
+<script type="module" src={% static 'scripts/customerHeader.js'%}></script>
