@@ -1,0 +1,16 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{% block title %}Inicio funcionário{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/employee.css' %}" >
+{% endblock style%}
+
+{% block content %}
+    <main class="container">
+        <h1 class="welcomeEmployeeTitle">Bem vindo <strong>{{ employeeName }}</strong></h1>
+        <span class="separatorDetail"></span>
+        <h2 class="titleWeekSchedules">Serviços agendados para você esta semana</h2>
+    </main>
+{% endblock content %}
