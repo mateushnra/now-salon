@@ -1,2 +1,2 @@
 # now-salon
-Sistema de agendamento de serviços em um barbearia.
+Sistema de agendamento de serviços em uma barbearia.

@@ -1,0 +1,55 @@
+{% extends 'baseCustomer.html'%}
+{% load static %}
+
+{% block title %}Cadastro{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/signup.css' %}" >
+{% endblock style%}
+
+{% block content %}
+    <main class="container">
+        <img
+            class="signUpImage"
+            src={% static 'images/signupBarber.jpg'%}
+            alt="Imagem de um barbeiro em uma barbearia"
+        />
+
+        <form  action="{% url 'signup' %}" id="signup" method="post" class="formContainer">
+            {% csrf_token %}
+            <div class="formHeader">
+                <h1 class="title">Crie sua conta <span class="detailTitle"></span></h1>
+                
+                <p>São poucos passos, mas é necessário para validarmos quem está agendando nossos serviços</p>
+            </div>
+            
+            <div class="formBody">
+                <div class="inputContainer">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name"/>
+                    <span id="error-name"></span>
+                </div>
+                <div class="inputContainer">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email"/>
+                    <span id="error-email"></span>
+                </div>
+                <div class="inputContainer">
+                    <label for="phone">Telefone</label>
+                    <input type="tel" id="phone" name="phone" maxlength="13"/>
+                    <span id="error-phone"></span>
+                </div>
+                <div class="inputContainer">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password"/>
+                    <span id="error-password"></span>
+                </div>
+            </div>
+            
+            <button class="signUpButton" type="submit"> Cadastrar-se </button>
+
+            <div id="error-form-signup" class="registrationStatus"></div>
+        </form>    
+    </main>
+    <script type="module" src={% static 'scripts/signup.js'%}></script>
+{% endblock content %}

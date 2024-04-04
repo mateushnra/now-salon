@@ -1,0 +1,80 @@
+{% extends 'baseCustomer.html'%}
+{% load static %}
+
+{% block title %}Home{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/index.css' %}" >
+{% endblock style%}
+
+{% block content %}
+    <main>
+        <div class="mainContentWrapper">
+            <span class="lightDetail1"></span>
+            <span class="lightDetail2"></span>
+            <span class="lightDetail3"></span>
+
+            <section class="container homeMainContentContainer">
+                <div>
+                    <h1>Faça seu agendamento <strong>agora!</strong></h1>
+                    <p>O processo de agendamento é rápido, escolha o serviço que procura e o profissional que fará o trabalho. Depois é só decidir o dia e horário que você deseja ser atendido!</p>
+                    <button>Agendar</button>
+                </div>
+                <img
+                    src={% static 'images/barberVector.png'%}
+                    alt="Desenho de um homem barbudo"
+                />
+            </section>
+        </div>
+        <div class="mainServicesWrapper">
+            <section class="container homeMainServicesContainer">
+                <h1>Principais serviços</h1>
+                <div class="mainServicesContainer">
+                    <div>
+                        <img
+                            src={% static 'images/cuttingHair.png'%}
+                            alt="Homem cortando o cabelo"
+                        />
+                        <strong>Cabelo</strong>
+                    </div>
+                    <div>
+                        <img
+                            src={% static 'images/shavingBeard.png'%}
+                            alt="Homem cortando a barba"
+                        />
+                        <strong>Barba</strong>
+                    </div>
+                    <div>
+                        <img
+                            priority={true}
+                            src={% static 'images/shavingEyebrow.png'%}
+                            alt="Homem arrumando a sombracelha "
+                        />
+                        <strong>Sombrancelha</strong>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div>
+            <section class="container containerContactPartnership">
+                <form class="formContactPartnership">
+                    <div>
+                        <label>Email</label>
+                        <input type='text'/>
+                    </div>
+                    <div>
+                        <label>Motivo do contato</label>
+                        <textarea></textarea>
+                    </div>
+                    <button disabled>Enviar mensagem</button>
+                </form>
+                <div class="titleContactPartnershipContainer">
+                    <h2>CONTATE</h2>
+                    <h2>NOS</h2>
+                    <h2>PARA PARCERIAS</h2>
+                </div>
+                <span class="rectangleDetail"/>
+            </section>
+        </div>
+    </main>
+{% endblock content %}

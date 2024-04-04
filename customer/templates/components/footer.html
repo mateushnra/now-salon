@@ -1,0 +1,32 @@
+{% load static %}
+
+<footer class="footer">
+    <div class="containerBrandSocial">
+         <strong>Now Salon</strong>
+         <div>
+            <img src={% static '/images/icons/instagram.svg'%}/>
+            <img src={% static '/images/icons/facebook.svg'%}/>
+         </div>
+    </div>
+    <address class="containerAddress">
+         <div class="titleInfoContainer">
+             <img src={% static '/images/icons/map-pin.svg'%}/>
+             <strong>Localização</strong>
+         </div>
+         <div class="itemsInfo">
+             <p>Rua fulano de tal, 177</p>
+             <p>Bairro ali perto</p>
+             <p>Araçatuba, SP</p>
+         </div>
+    </address>
+    <div class="containerContacts">
+         <div class="titleInfoContainer">
+            <img src={% static '/images/icons/phone.svg'%}/>
+             <strong>Contato</strong>
+         </div>
+         <div class="itemsInfo">
+             <p>(18) 99999-9999</p>
+             <p>nowsalon@contato.com</p>
+         </div>
+    </div>
+ </footer>
