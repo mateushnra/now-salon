@@ -1,0 +1,118 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{% block title %}Gerenciar estabelecimento{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/salon.css' %}" >
+{% endblock style%}
+
+{% block content %}
+    <main class="container">
+        <h1 class="pageTitle">Gerenciar estabelecimento</h1>
+        <span class="separatorDetail"></span>
+
+        <form id="editSalonForm" class="formContainer">
+            <div class="formData">
+                <section class="sectionSalonData">
+                    <strong>Dados do Estabelecimento</strong>
+                    
+                    <div class="fieldsSalonData">
+                        <div class="inputContainer">
+                            <label for="name">Nome</label>
+                            <input type="text" value="{{salonData.name}}" id="name" name="name"/>
+                            <span id="error-name"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="phone">Telefone</label>
+                            <input type="tel" id="phone" name="phone" maxlength="13" value="{{salonData.phone}}"/>
+                            <span id="error-phone"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="email">Email Contato</label>
+                            <input type="text" id="email" name="email" value="{{salonData.email}}"/>
+                            <span id="error-email"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="status">Status do Salão</label>
+                            <select id="status" name="status">
+                                <option {% if salonData.status == "1" %}selected{% endif %} value="1">Ativo</option>
+                                <option {% if salonData.status == "2" %}selected{% endif %} value="2">Reformando</option>
+                                <option {% if salonData.status == "3" %}selected{% endif %} value="3">Inativo</option>
+                            </select>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="address">Endereço</label>
+                            <input type="text" id="address" name="address" value="{{salonData.address}}"/>
+                            <span id="error-address"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="neighborhood">Bairro</label>
+                            <input type="text" id="neighborhood" name="neighborhood" value="{{salonData.neighborhood}}"/>
+                            <span id="error-neighborhood"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="cityState">Cidade/Estado</label>
+                            <input type="text" id="cityState" name="cityState" value="{{salonData.cityState}}"/>
+                            <span id="error-cityState"></span>
+                        </div>
+                    </div>
+                </section>
+                <section class="sectionSalonOperation">
+                    <strong>Funcionamento</strong>
+                                
+                    <div class="fieldsSalonOperation">
+                        <div class="inputContainer">
+                            <label for="timeOpen">Horário de Abertura</label>
+                            <input type="time" id="timeOpen" name="timeOpen" value="{{salonData.openHour}}"/>
+                            <span id="error-timeOpen"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="timeClose">Horário de Fechamento</label>
+                            <input type="time" id="timeClose" name="timeClose" value="{{salonData.closeHour}}"/>
+                            <span id="error-timeClose"></span>
+                        </div>
+
+                        <input type="text" style="display:none" value="{{salonData.daysWeekOpen}}"/>
+
+                        <div id="containerDaysCheckList" class="containerCheckList">
+                            <label class="labelTitleChecklist">Dias de Funcionamento</label>
+
+                            <div>
+                                <input id="Domingo" value="Domingo" type="checkbox" />
+                                <label for="Domingo" >Domingo</label>
+                            </div>
+                            <div>
+                                <input id="Segunda" value="Segunda" type="checkbox" />
+                                <label for="Segunda">Segunda</label>
+                            </div>
+                            <div>
+                                <input id="Terca" value="Terca" type="checkbox" />
+                                <label for="Terca">Terça</label>
+                            </div>
+                            <div>
+                                <input id="Quarta" value="Quarta" type="checkbox" />
+                                <label for="Quarta">Quarta</label>
+                            </div>
+                            <div>
+                                <input id="Quinta" value="Quinta" type="checkbox" />
+                                <label for="Quinta">Quinta</label>
+                            </div>
+                            <div>
+                                <input id="Sexta" value="Sexta" type="checkbox" />
+                                <label for="Sexta">Sexta</label>
+                            </div>
+                            <div>
+                                <input id="Sabado" value="Sabado" type="checkbox" />
+                                <label for="Sabado">Sabado</label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <button class="saveEditButton" type="submit">Salvar dados</button>
+        </form>
+    </main>
+    <script type="module" src={% static 'scripts/salon.js'%}></script>
+{% endblock content %}

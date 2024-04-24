@@ -46,8 +46,6 @@ def employee(request):
 
     if "employee_id" in request.session:
         context = {"employeeLoggedIn": True, "employeeAccessLevel": request.session["employee_access_level"], "employeeName": request.session["employee_name"]}
-
-        print(request.session["employee_access_level"])
     else:
         return redirect('/')
         

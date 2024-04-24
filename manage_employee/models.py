@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.hashers import make_password
 
 ACCESS_LEVEL_CHOICES=(
-    ('1', 'Manager'),
-    ('2','Employee'),
+    ('1', 'Gerente'),
+    ('2','Funcionario'),
 )
 
 class Employee(models.Model):
