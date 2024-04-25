@@ -1,0 +1,53 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{% block title %}Gerenciar clientes{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/customer.css' %}" >
+{% endblock style%}
+
+{% block content %}
+    <main class="container">
+        <header class="headerCustomer">
+            <h1 class="pageTitle">Editando cliente: {{customerSelected.name}}</h1>
+        </header>
+        <span class="separatorDetail"></span>
+
+        <form id="createCustomerForm" method="post" class="formContainer">
+            {% csrf_token %}
+            <section class="sectionData">  
+
+                <div class="fieldsData">
+                    <div class="inputContainer">
+                        <label for="name">Nome</label>
+                        <input type="text" id="name" value="{{customerSelected.name}}" name="name"/>
+                        <span id="error-name"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="email">Email</label>
+                        <input type="text" id="email" value="{{customerSelected.email}}" name="email"/>
+                        <span id="error-email"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="phone">Telefone</label>
+                        <input type="tel" id="phone" value="{{customerSelected.phone}}" name="phone" maxlength="13"/>
+                        <span id="error-phone"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="password">Senha</label>
+                        <div class="alertPassword"><img src={% static '/images/icons/alert.svg'%}/>Deixar a senha em branco mantém a senha atual</div>
+                        <input type="password" id="password" name="password"/>
+                        <span id="error-password"></span>
+                    </div>
+                </div>
+
+                <div class="containerActionButtons">
+                    <button class="createButton" type="submit">Confirmar e editar</button>
+                    <a class="deleteButton" href="{% url 'customer' %}">Cancelar</a>
+                </div>
+            </section>            
+        </form>
+    </main>
+    <script type="module" src={% static 'scripts/customer_edit.js' %}></script>
+{% endblock content %}

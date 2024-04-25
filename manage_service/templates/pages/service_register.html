@@ -1,0 +1,59 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{% block title %}Gerenciar serviços{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/service.css' %}" >
+{% endblock style%}
+
+{% block content %}
+    <main class="container">
+        <header class="headerService">
+            <h1 class="pageTitle">Criar novo serviço</h1>
+            <a href="{% url 'service' %}" class="listServiceButton">Visualizar serviços</a>
+        </header class="headerService">
+        <span class="separatorDetail"></span>
+
+        <form id="createServiceForm" method="post" class="formContainer">
+            {% csrf_token %}
+            <section class="sectionData">  
+                {% if serviceCreated == True %}<span class="successMessage">Serviço cadastrado com sucesso!</span>{% endif %} 
+
+                <div class="fieldsData">
+                    <div class="inputContainer">
+                        <label for="name">Nome</label>
+                        <input type="text" id="name" name="name"/>
+                        <span id="error-name"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="description">Descrição</label>
+                        <textarea id="description" name="description"></textarea>
+                        <span id="error-description"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="estimatedTime">Tempo estimado</label>
+                        <input type="time" id="estimatedTime" name="estimatedTime"/>
+                        <span id="error-estimatedTime"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="price">Preço</label>
+                        <input type="number" id="price" step="0.1" name="price"/>
+                        <span id="error-price"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="status">Status do serviço</label>
+                        <select id="status" name="status">
+                            <option value="1">Ativo</option>
+                            <option value="2">Inativo</option>
+                        </select>
+                        <span id="error-status"></span>
+                    </div>
+                </div>
+
+                <button class="createServiceButton" type="submit">Cadastrar serviço</button>
+            </section>            
+        </form>
+    </main>
+    <script type="module" src={% static 'scripts/service_register.js' %}></script>
+{% endblock content %}

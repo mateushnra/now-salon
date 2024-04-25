@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=50)),
                 ('phone', models.CharField(max_length=13)),
                 ('role', models.CharField(max_length=30)),
-                ('accessLevel', models.CharField(choices=[('1', 'Manager'), ('2', 'Employee')], default=2, max_length=8)),
+                ('accessLevel', models.CharField(choices=[('1', 'Gerente'), ('2', 'Funcionario')], default=2, max_length=8)),
                 ('password', models.CharField(max_length=200)),
             ],
         ),

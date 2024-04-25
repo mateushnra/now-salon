@@ -1,0 +1,61 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{% block title %}Gerenciar serviços{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/service.css' %}" >
+{% endblock style%}
+
+{% block content %}
+    <main class="container">
+        <header class="headerService">
+            <h1 class="pageTitle">Editando serviço: {{serviceSelected.name}}</h1>
+        </header class="headerService">
+        <span class="separatorDetail"></span>
+
+        <form id="createServiceForm" method="post" class="formContainer">
+            {% csrf_token %}
+            <section class="sectionData">  
+
+                <div class="fieldsData">
+                    <div class="inputContainer">
+                        <label for="name">Nome</label>
+                        <input type="text" id="name" value="{{serviceSelected.name}}" name="name"/>
+                        <span id="error-name"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="description">Descrição</label>
+                        <textarea id="description" name="description">{{serviceSelected.description}}</textarea>
+                        <span id="error-description"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="estimatedTime">Tempo estimado</label>
+                        <input type="time" value="{{serviceSelected.estimatedTime}}" id="estimatedTime" name="estimatedTime"/>
+                        <span id="error-estimatedTime"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="price">Preço</label>
+                        <input type="number" value="{{serviceSelected.price}}" id="price" step="0.1" name="price"/>
+                        <span id="error-price"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="status">Status do serviço</label>
+                        <select id="status" name="status">
+                            <option {% if salonData.status == "1" %}selected{% endif %} value="1">Ativo</option>
+                            <option {% if salonData.status == "2" %}selected{% endif %} value="2">Inativo</option>
+                        </select>
+                        <span id="error-status"></span>
+                    </div>
+                </div>
+
+                <div class="containerActionButtons">
+                    <button class="createServiceButton" type="submit">Confirmar e editar</button>
+
+                    <a class="deleteButton" href="{% url 'service' %}">Cancelar</a>
+                </div>
+            </section>            
+        </form>
+    </main>
+    <script type="module" src={% static 'scripts/service_register.js' %}></script>
+{% endblock content %}

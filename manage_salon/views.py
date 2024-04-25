@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Salon
-from django.http import JsonResponse, HttpResponseRedirect
-from django.urls import reverse
-import json
+from .forms import SalonForm
 
 def salon(request, pk):
     if "customer_id" in request.session:
@@ -11,6 +9,14 @@ def salon(request, pk):
         context = {"customerLoggedIn": False}
 
     if "employee_id" in request.session and request.session["employee_access_level"] == "1":
+
+        if request.method == "POST":
+            updateSalon = Salon.objects.get(id=pk)
+            form = SalonForm(instance=updateSalon)
+            form = SalonForm(instance=updateSalon, data=request.POST)
+
+            if form.is_valid():
+                form.save()
         
         try:
             salon = Salon.objects.get(id=pk)

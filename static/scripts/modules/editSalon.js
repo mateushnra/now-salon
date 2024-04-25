@@ -1,7 +1,7 @@
 import ValidationForm from "./validationForm.js";
 
 export default class EditSalon {
-    constructor(editSalonForm, nameInput, phoneInput, emailInput, statusSelect, addressInput, neighborhoodInput, cityStateInput, timeOpenInput, timeCloseInput, containerDaysCheckList, errorName, errorPhone, errorEmail, errorAddress, errorNeighborhood, errorCityState, errorTimeOpen, errorTimeClose) {
+    constructor(editSalonForm, nameInput, phoneInput, emailInput, statusSelect, addressInput, neighborhoodInput, cityStateInput, timeOpenInput, timeCloseInput, daysOpenInput, containerDaysCheckList, errorName, errorPhone, errorEmail, errorAddress, errorNeighborhood, errorCityState, errorTimeOpen, errorTimeClose) {
         this.editSalonForm = document.querySelector(editSalonForm);
 
         this.nameInput = document.querySelector(nameInput);
@@ -13,6 +13,7 @@ export default class EditSalon {
         this.cityStateInput = document.querySelector(cityStateInput);
         this.timeOpenInput = document.querySelector(timeOpenInput);
         this.timeCloseInput = document.querySelector(timeCloseInput);
+        this.daysOpenInput = document.querySelector(daysOpenInput);
 
         this.containerDaysCheckList = document.querySelector(containerDaysCheckList);
 
@@ -28,73 +29,45 @@ export default class EditSalon {
         this.eventSubmitForm = this.eventSubmitForm.bind(this);
     }
 
-    // showErrorMessage(errorMessage){
-    //     if(errorMessage){
-    //         this.errorForm.innerHTML = errorMessage; 
-    //     }
-    // }
-
-    // getCookie(name) {
-    //     var cookieValue = null;
-    //     if (document.cookie && document.cookie !== '') {
-    //         var cookies = document.cookie.split(';');
-    //         for (var i = 0; i < cookies.length; i++) {
-    //             var cookie = cookies[i].trim();
-                
-    //             if (cookie.substring(0, name.length + 1) === (name + '=')) {
-    //                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     return cookieValue;
-    // }
-
-    // getDataToSend(){
-    //     const email = this.emailInput.value;
-    //     const csrftoken = this.getCookie("csrftoken");
-
-    //     return {email, csrftoken}
-    // }
-
-    async recoverSalonData(data){
-        const currentURL = window.location.href;
-        console.log(currentURL);
-
-        const currentPagePath = window.location.pathname;
-        console.log(currentPagePath);
-        // if(data.csrftoken){
-        //     try{
-        //         const response = await fetch('/verifyEmail/', {
-        //             method: 'POST', 
-        //             headers: {
-        //                 "X-Requested-With": "XMLHttpRequest",
-        //                 "Content-Type": "application/json",
-        //                 "X-CSRFToken": data.csrftoken
-        //             },
-        //             body: JSON.stringify({"email": data.email}), 
-        //         });
+    loadCheckedData(){
+        let daysWeekOpen = this.daysOpenInput.value
+        let daysArray = daysWeekOpen.split(', ');
         
-        //         const feedback = await response.json()
+        var checkboxes = this.containerDaysCheckList.querySelectorAll('input[type="checkbox"]');
 
-        //         this.errorMsg = feedback.errorMsg 
+        checkboxes.forEach(function(checkbox) {
+            if (daysArray.includes(checkbox.value)) {
+                checkbox.checked = true;
+            }
+        });
+    }
 
-        //         if(feedback.success){        
-        //             return true
-        //         }else{
-        //             this.showErrorMessage(this.errorMsg);
-        //             return false
-        //         }
-                 
-        //     }catch(e){
-        //         return e
-        //     }
-        //}
+    addChangeEventToCheckboxes() {
+        const checkboxes = this.containerDaysCheckList.querySelectorAll('input[type="checkbox"]');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () =>{
+                const day = checkbox.value;
+                let daysWeekOpen = this.daysOpenInput.value.split(', ');
+                
+                if (checkbox.checked) {
+                    if (!daysWeekOpen.includes(day)) {
+                        daysWeekOpen.push(day);
+                    }
+                } else {
+                    const index = daysWeekOpen.indexOf(day);
+                    if (index !== -1) {
+                        daysWeekOpen.splice(index, 1);
+                    }
+                }
+
+                this.daysOpenInput.value = this.daysOpenInput.value == '' ? day : daysWeekOpen.join(', ');
+            });
+        });
     }
   
     async eventSubmitForm(e) {
         e.preventDefault() 
-        this.recoverSalonData()
         if(this.isAllFieldsValid()){
             e.target.submit()
         }
@@ -123,7 +96,7 @@ export default class EditSalon {
             msgPhoneError = "Número de telefone incompleto"
         }
 
-        if(validation.isEmpty(this.nameInput.value)){
+        if(validation.isEmpty(this.phoneInput.value)){
             isFormValid = false
             msgPhoneError = "Telefone vazio"
         }
@@ -180,8 +153,10 @@ export default class EditSalon {
     }
 
     init() {
-    if (this.editSalonForm && this.emailInput && this.phoneInput && this.emailInput && this.statusSelect && this.addressInput && this.neighborhoodInput && this.cityStateInput && this.timeOpenInput && this.timeCloseInput && this.containerDaysCheckList) {
+    if (this.editSalonForm && this.emailInput && this.phoneInput && this.emailInput && this.statusSelect && this.addressInput && this.neighborhoodInput && this.cityStateInput && this.timeOpenInput && this.timeCloseInput && this.daysOpenInput) {
         this.addFormEvent();
+        this.loadCheckedData();
+        this.addChangeEventToCheckboxes();
     }
       return this;
     }

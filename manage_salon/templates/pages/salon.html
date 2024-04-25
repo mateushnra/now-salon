@@ -12,7 +12,8 @@
         <h1 class="pageTitle">Gerenciar estabelecimento</h1>
         <span class="separatorDetail"></span>
 
-        <form id="editSalonForm" class="formContainer">
+        <form id="editSalonForm" method="post" class="formContainer">
+            {% csrf_token %}
             <div class="formData">
                 <section class="sectionSalonData">
                     <strong>Dados do Estabelecimento</strong>
@@ -40,6 +41,7 @@
                                 <option {% if salonData.status == "2" %}selected{% endif %} value="2">Reformando</option>
                                 <option {% if salonData.status == "3" %}selected{% endif %} value="3">Inativo</option>
                             </select>
+                            <span id="error-status"></span>
                         </div>
                         <div class="inputContainer">
                             <label for="address">Endereço</label>
@@ -64,23 +66,23 @@
                     <div class="fieldsSalonOperation">
                         <div class="inputContainer">
                             <label for="timeOpen">Horário de Abertura</label>
-                            <input type="time" id="timeOpen" name="timeOpen" value="{{salonData.openHour}}"/>
+                            <input type="time" id="timeOpen" name="openHour" value="{{salonData.openHour}}"/>
                             <span id="error-timeOpen"></span>
                         </div>
                         <div class="inputContainer">
                             <label for="timeClose">Horário de Fechamento</label>
-                            <input type="time" id="timeClose" name="timeClose" value="{{salonData.closeHour}}"/>
+                            <input type="time" id="timeClose" name="closeHour" value="{{salonData.closeHour}}"/>
                             <span id="error-timeClose"></span>
                         </div>
 
-                        <input type="text" style="display:none" value="{{salonData.daysWeekOpen}}"/>
+                        <input type="text" id="daysWeekOpen" name="daysWeekOpen" style="display:none" value="{{salonData.daysWeekOpen}}"/>
 
                         <div id="containerDaysCheckList" class="containerCheckList">
                             <label class="labelTitleChecklist">Dias de Funcionamento</label>
 
                             <div>
                                 <input id="Domingo" value="Domingo" type="checkbox" />
-                                <label for="Domingo" >Domingo</label>
+                                <label for="Domingo">Domingo</label>
                             </div>
                             <div>
                                 <input id="Segunda" value="Segunda" type="checkbox" />
@@ -114,5 +116,5 @@
             <button class="saveEditButton" type="submit">Salvar dados</button>
         </form>
     </main>
-    <script type="module" src={% static 'scripts/salon.js'%}></script>
+    <script type="module" src={% static 'scripts/salon.js' %}></script>
 {% endblock content %}
