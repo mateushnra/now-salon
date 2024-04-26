@@ -1,0 +1,80 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{% block title %}Gerenciar funcionarios{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/manage_employee.css' %}" >
+{% endblock style%}
+
+{% block content %}
+    <main class="container">
+        <header class="headerEmployee">
+            <h1 class="pageTitle">Editando funcionario: {{employeeSelected.name}}</h1>
+        </header>
+        <span class="separatorDetail"></span>
+
+        <form id="editEmployeeForm" method="post" class="formContainer">
+            {% csrf_token %}
+            <div class="formData">
+                <section class="sectionData">  
+                    <div class="fieldsData">
+                        <div class="inputContainer">
+                            <label for="name">Nome</label>
+                            <input type="text" id="name" value="{{employeeSelected.name}}" name="name"/>
+                            <span id="error-name"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="phone">Telefone</label>
+                            <input type="tel" id="phone" value="{{employeeSelected.phone}}" name="phone" maxlength="13"/>
+                            <span id="error-phone"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="role">Cargo</label>
+                            <input type="text" id="role" value="{{employeeSelected.role}}" name="role"/>
+                            <span id="error-role"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="accessLevel">Nível de acesso</label>
+                            <select id="accessLevel" name="accessLevel">
+                                <option {% if employeeSelected.accessLevel == "1" %}selected{% endif %} value="1">Gerente</option>
+                                <option {% if employeeSelected.accessLevel == "2" %}selected{% endif %} value="2">Funcionario</option>
+                            </select>
+                            <span id="error-acessLevel"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="password">Senha</label>
+                            <div class="alertPassword"><img src={% static '/images/icons/alert.svg'%}/>Deixar a senha em branco mantém a senha atual</div>
+                            <input data-editing type="password" id="password" name="password"/>
+                            <span id="error-password"></span>
+                        </div>
+                        <select name="service" style="display:none" id="selectEmployeeServices" multiple>
+                            {% for service in services %}
+                                <option {% if service in employeeSelected.service.all %} selected {% endif %} value="{{service.id}}">{{service.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </section> 
+                <section class="sectionEmployeeServices">
+                    <strong>Serviços realizados</strong>
+                
+                        <div id="checklistEmployeeServices" class="containerCheckList">
+                            {% for service in services %}
+                                <div>
+                                    <input {% if service in employeeSelected.service.all %} checked {% endif %} id="{{service.id}}" value="{{service.id}}" type="checkbox" />
+                                    <label for="{{service.id}}">{{service.name}}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <div class="containerActionButtons">
+                <button class="createButton" type="submit">Confirmar e editar</button>
+                <a class="deleteButton" href="{% url 'employee_list' %}">Cancelar</a>
+            </div>
+        </form>
+    </main>
+    <script type="module" src={% static 'scripts/employee_edit.js' %}></script>
+{% endblock content %}

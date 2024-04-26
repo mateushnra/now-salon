@@ -83,8 +83,6 @@ export default class SignUpCustomer {
         e.preventDefault() 
 
         if(this.isAllFieldsValid()){
-            e.preventDefault() 
-            
             const emailNotInUse = await this.verifyEmail(this.getDataToSend())
 
             if(emailNotInUse){

@@ -12,7 +12,7 @@
     padding: 0px 3.05rem;
 }
 
-.headerCustomer{
+.headerEmployee{
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -36,6 +36,13 @@
 
 .formContainer{
     display: flex;
+    flex-direction: column;
+    gap:2.4rem;
+}
+
+.formData{
+    display: flex;
+    flex-wrap: wrap;
     gap:2.4rem;
 }
 
@@ -57,6 +64,50 @@
     display: flex;
     flex-direction: column;
     gap:0.6rem;
+}
+
+.sectionEmployeeServices{
+    overflow: auto;
+    width: 340px;
+    max-height: 518px;
+    display: flex;
+    flex-direction: column;
+    gap:1.2rem;
+    background: var(--color-white);
+    padding: 1rem;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.127);
+}
+
+.sectionEmployeeServices > strong{
+    font-family: "Raleway", "sans-serif";
+    color: var(--color-gray-1000);
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+.containerCheckList{
+    display: flex;
+    flex-direction: column;
+    gap:0.4rem;
+}
+
+.containerCheckList > div{
+    display: flex;
+    align-items: center;
+    gap:0.6rem;
+}
+
+.containerCheckList > div > input{
+    width:1.2rem;
+    height: 1.2rem;
+    border-radius: 5px;
+}
+
+.containerCheckList > div > label{
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.25rem;
+    font-weight: normal;
+    color: var(--color-gray-900);
 }
 
 .createButton{

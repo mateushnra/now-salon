@@ -14,7 +14,7 @@
         </header>
         <span class="separatorDetail"></span>
 
-        <form id="createCustomerForm" method="post" class="formContainer">
+        <form id="editCustomerForm" method="post" class="formContainer">
             {% csrf_token %}
             <section class="sectionData">  
 
@@ -46,6 +46,8 @@
                     <button class="createButton" type="submit">Confirmar e editar</button>
                     <a class="deleteButton" href="{% url 'customer' %}">Cancelar</a>
                 </div>
+
+                {% if emailAlreadyExists == True %}<span class="errorMessage">Email já existe no sistema, insira outro email!</span>{% endif %} 
             </section>            
         </form>
     </main>

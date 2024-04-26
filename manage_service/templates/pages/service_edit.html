@@ -42,8 +42,8 @@
                     <div class="inputContainer">
                         <label for="status">Status do serviço</label>
                         <select id="status" name="status">
-                            <option {% if salonData.status == "1" %}selected{% endif %} value="1">Ativo</option>
-                            <option {% if salonData.status == "2" %}selected{% endif %} value="2">Inativo</option>
+                            <option {% if serviceSelected.status == "1" %}selected{% endif %} value="1">Ativo</option>
+                            <option {% if serviceSelected.status == "2" %}selected{% endif %} value="2">Inativo</option>
                         </select>
                         <span id="error-status"></span>
                     </div>

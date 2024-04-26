@@ -98,7 +98,7 @@ def service_edit(request, pk):
             updateService = Service.objects.get(id=pk)
             form = ServiceForm(instance=updateService)
             form = ServiceForm(instance=updateService, data=request.POST)
-            print(form)
+
             if form.is_valid():
                 form.save()
                 return redirect('/employee/service')

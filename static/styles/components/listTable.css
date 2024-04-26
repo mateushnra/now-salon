@@ -3,6 +3,7 @@
     flex-direction: column;
     gap:0.5rem;
     margin-top:3rem;
+ 
 }
 
 .containerTable{
@@ -11,6 +12,7 @@
     overflow-y: scroll;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
     background: var(--color-gray-100);
+    overflow-x: auto;
 }
 
 .listTable{
@@ -116,4 +118,10 @@
 .deleteButton:disabled{
     background: rgb(230, 184, 184);
     cursor:not-allowed;
+}
+
+@media (max-width: 450px) {
+    .containerTable{
+        width:300px;
+    }
 }

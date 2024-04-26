@@ -17,7 +17,7 @@ def customer(request):
         }
 
         customers = Customer.objects.all()
-        print(customers)
+
         searchedOption = request.GET.get('searchButton')
         filterOption = "Default"
 
@@ -54,31 +54,31 @@ def customer(request):
         
     return render(request, 'pages/customer.html', context)
 
-# def service_register(request):
-#     if "customer_id" in request.session:
-#         return redirect('/')
-#     else:
-#         context = {"customerLoggedIn": False}
+def customer_register(request):
+    if "customer_id" in request.session:
+        return redirect('/')
+    else:
+        context = {"customerLoggedIn": False}
 
-#     if "employee_id" in request.session and request.session["employee_access_level"] == "1":
-#         context = {
-#                     "employeeLoggedIn": True,
-#                     "employeeAccessLevel": request.session["employee_access_level"],
-#                     "employeeName": request.session["employee_name"],
-#                     "serviceCreated": False,
-#         }
+    if "employee_id" in request.session and request.session["employee_access_level"] == "1":
+        context = {
+            "employeeLoggedIn": True,
+            "employeeAccessLevel": request.session["employee_access_level"],
+            "employeeName": request.session["employee_name"],
+            "customerCreated": False,
+        }
 
-#         if request.method == "POST":
-#             form = ServiceForm(request.POST)
+        if request.method == "POST":
+            form = CustomerForm(request.POST)
 
-#             if form.is_valid():
-#                 form.save()
+            if form.is_valid():
+                form.save()
+                context["customerCreated"] = True
 
-#                 context["serviceCreated"] = True
-#     else:
-#         return redirect('/')
+    else:
+        return redirect('/')
         
-#     return render(request, 'pages/service_register.html', context)
+    return render(request, 'pages/customer_register.html', context)
 
 def customer_edit(request, pk):
     if "customer_id" in request.session:
@@ -87,36 +87,54 @@ def customer_edit(request, pk):
         context = {"customerLoggedIn": False}
 
     if "employee_id" in request.session and request.session["employee_access_level"] == "1":
+        context = {
+            "employeeLoggedIn": True,
+            "employeeAccessLevel": request.session["employee_access_level"],
+            "employeeName": request.session["employee_name"],
+            "emailAlreadyExists": False
+        }
+        
         if request.method == "POST":
-           
-            updateCustomer = Customer.objects.get(id=pk)
-            updateCustomer.name = request.POST.get("name")
-            updateCustomer.email = request.POST.get("email")
-            updateCustomer.phone = request.POST.get("phone")
-            
-            if request.POST.get("password") != '':
-                updateCustomer.password = request.POST.get("password")
-                
-            updateCustomer.save()
-                
-            # form = CustomerForm(instance=updateCustomer)
-            # print(form)
-            # form = CustomerForm(instance=updateCustomer, data=request.POST)
-            # print(form)
-            # if form.is_valid():
-            #     form.save()
-            #     return redirect('/employee/customer')
+            try:    
+                customerBeingEdit = Customer.objects.get(id=pk)
+                EmailAlreadyExists = Customer.objects.get(email=request.POST.get("email"))
 
+                if EmailAlreadyExists and EmailAlreadyExists.email != customerBeingEdit.email: 
+                    context["emailAlreadyExists"] = True
+                else:
+                    updateCustomer = Customer.objects.get(id=pk)
+                    updateCustomer.name = request.POST.get("name")
+                    updateCustomer.email = request.POST.get("email")
+                    updateCustomer.phone = request.POST.get("phone")
+
+                    if request.POST.get("password") != '':
+                        updateCustomer.password = request.POST.get("password")
+
+                        updateCustomer.save(update_fields=["name", "email", "phone", "password"])
+                    else:
+                        updateCustomer.save(update_fields=["name", "email", "phone"])
+                        
+                    return redirect('/employee/customer')
+            except Customer.DoesNotExist:
+                updateCustomer = Customer.objects.get(id=pk)
+                updateCustomer.name = request.POST.get("name")
+                updateCustomer.email = request.POST.get("email")
+                updateCustomer.phone = request.POST.get("phone")
+                
+                if request.POST.get("password") != '':
+                    updateCustomer.password = request.POST.get("password")
+
+                    updateCustomer.save(update_fields=["name", "email", "phone", "password"])
+                else:
+                    updateCustomer.save(update_fields=["name", "email", "phone"])
+                    
+                return redirect('/employee/customer')
+            
         try:
             customerSelected = Customer.objects.get(id=pk)
 
             if customerSelected:
-                context = {
-                    "employeeLoggedIn": True,
-                    "employeeAccessLevel": request.session["employee_access_level"],
-                    "employeeName": request.session["employee_name"],
-                    "customerSelected": customerSelected,
-                }
+                context["customerSelected"] = customerSelected
             else:
                 return redirect('/employee/service')
         except Customer.DoesNotExist:
