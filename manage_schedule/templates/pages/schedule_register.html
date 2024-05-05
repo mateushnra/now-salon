@@ -1,0 +1,53 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{% block title %}Gerenciar clientes{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/customer.css' %}" >
+{% endblock style%}
+
+{% block content %}
+    <main class="container">
+        <header class="headerCustomer">
+            <h1 class="pageTitle">Incluir novo cliente</h1>
+            <a href="{% url 'customer' %}" class="listButton">Visualizar clientes</a>
+        </header>
+        <span class="separatorDetail"></span>
+
+        <form id="createCustomerForm" method="post" class="formContainer">
+            {% csrf_token %}
+            <section class="sectionData">  
+                {% if customerCreated == True %}<span class="successMessage">Cliente cadastrado com sucesso!</span>{% endif %} 
+
+                <div class="fieldsData">
+                    <div class="inputContainer">
+                        <label for="name">Nome</label>
+                        <input type="text" id="name" name="name"/>
+                        <span id="error-name"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="email">Email</label>
+                        <input type="text" id="email" name="email"/>
+                        <span id="error-email"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="phone">Telefone</label>
+                        <input type="tel" id="phone" name="phone" maxlength="13"/>
+                        <span id="error-phone"></span>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" name="password"/>
+                        <span id="error-password"></span>
+                    </div>
+                </div>
+
+                <button class="createButton" type="submit">Cadastrar Cliente</button>
+
+                <div id="error-form" class="registrationStatus"></div>
+            </section>            
+        </form>
+    </main>
+    <script type="module" src={% static 'scripts/customer_register.js' %}></script>
+{% endblock content %}

@@ -120,6 +120,29 @@
     cursor:not-allowed;
 }
 
+.selectButton{
+    margin-top:1rem;
+    background: rgb(172, 218, 255);
+    text-decoration: none;
+    color: var(--color-gray-1000);
+    padding: 0.6rem 1.2rem;
+    border:none;
+    font-weight: 500;
+    width: fit-content;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.selectButton:hover{
+    background: rgb(134, 179, 216);
+    transition: background 0.2s;
+}
+
+.selectButton:disabled{
+    background: rgb(175, 196, 213);
+    cursor:not-allowed;
+}
+
 @media (max-width: 450px) {
     .containerTable{
         width:300px;
