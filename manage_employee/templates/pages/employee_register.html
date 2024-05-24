@@ -1,0 +1,80 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{% block title %}Gerenciar funcionários{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/manage_employee.css' %}" >
+{% endblock style%}
+
+{% block content %}
+    <main class="container">
+        <header class="headerEmployee">
+            <h1 class="pageTitle">Incluir novo funcionário</h1>
+            <a href="{% url 'employee_list' %}" class="listButton">Visualizar funcionários</a>
+        </header>
+        <span class="separatorDetail"></span>
+
+        <form id="createEmployeeForm" method="post" class="formContainer">
+            {% csrf_token %}
+            <div class="formData">
+                <section class="sectionData">   
+                    {% if employeeCreated == True %}<span class="successMessage">Funcionário cadastrado com sucesso!</span>{% endif %} 
+
+                    <div class="fieldsData">
+                        <div class="inputContainer">
+                            <label for="name">Nome</label>
+                            <input type="text" id="name" name="name"/>
+                            <span id="error-name"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="phone">Telefone</label>
+                            <input type="tel" id="phone" name="phone" maxlength="13"/>
+                            <span id="error-phone"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="role">Cargo</label>
+                            <input type="text" id="role" name="role"/>
+                            <span id="error-role"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="accessLevel">Nível de acesso</label>
+                            <select id="accessLevel" name="accessLevel">
+                                <option value="1">Gerente</option>
+                                <option selected value="2">Funcionario</option>
+                            </select>
+                            <span id="error-acessLevel"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="password">Senha</label>
+                            <input type="password" id="password" name="password"/>
+                            <span id="error-password"></span>
+                        </div>
+
+                        <select name="service" style="display:none" id="selectEmployeeServices" multiple>
+                            {% for service in services %}
+                                <option value="{{service.id}}">{{service.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </section> 
+                <section class="sectionEmployeeServices">
+                    <strong>Serviços realizados</strong>
+                
+                        <div id="checklistEmployeeServices" class="containerCheckList">
+                            {% for service in services %}
+                                <div>
+                                    <input id="{{service.id}}" value="{{service.id}}" type="checkbox" />
+                                    <label for="{{service.id}}">{{service.name}}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <button class="createButton" type="submit">Cadastrar Funcionário</button>
+        </form>
+    </main>
+    <script type="module" src={% static 'scripts/employee_register.js' %}></script>
+{% endblock content %}

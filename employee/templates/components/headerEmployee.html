@@ -13,11 +13,11 @@
                         <button id="button-dropdown-manage">Gerenciar <img src="{% static 'images/icons/chevron-down.svg'%}"></button>
 
                         <ul id="dropdown-manage-list" class="navManageList">
-                            <li><a href="#salon">Estabelecimento</a></li> 
-                            <li><a href="#services">Serviços</a></li> 
-                            <li><a href="#employees">Funcionários</a></li> 
-                            <li><a href="#customers">Clientes</a></li> 
-                            <li><a href="#schedules">Agendamentos</a></li> 
+                            <li><a href={% url 'salon' 1 %}>Estabelecimento</a></li> 
+                            <li><a href={% url 'service' %}>Serviços</a></li>
+                            <li><a href={% url 'customer' %}>Clientes</a></li>  
+                            <li><a href={% url 'employee_list' %}>Funcionários</a></li> 
+                            <li><a href={% url 'schedule_list' %}>Agendamentos</a></li> 
                         </ul>
                     </li>
                 {% endif %}   

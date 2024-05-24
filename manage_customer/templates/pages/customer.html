@@ -1,0 +1,129 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{% block title %}Gerenciar clientes{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/customer.css' %}" >
+{% endblock style%}
+
+{% block content %}
+    <main class="container">
+        <header class="headerCustomer">
+            <h1 class="pageTitle">Lista de clientes</h1>
+            <a href="{% url 'customer_register'%}" class="listButton">Incluir novo cliente</a>
+        </header>
+        <span class="separatorDetail"></span>
+
+        <form id="filterServiceForm" method="get" class="formFilterContainer">
+            <section class="sectionFilterOptions">  
+                <div class="titleFilter">
+                    <img src={% static '/images/icons/filter.svg'%}/>
+                    <strong>Filtrar pesquisa por</strong>
+                </div>
+                <div class="radioInputContainer">
+                    <input type="radio" 
+                    {% if filterOption == "Default" or filterOption == "name" %} checked {% endif %} value="name" id="name" name="filterOption"/>
+                    <label for="name">Nome</label>
+                </div>
+                <div class="radioInputContainer">
+                    <input type="radio" 
+                    {% if filterOption == "email" %} checked {% endif %} value="email" id="email" name="filterOption"/>
+                    <label for="email">Email</label>
+                </div>
+                <div class="radioInputContainer">
+                    <input type="radio" 
+                    {% if filterOption == "phone" %} checked {% endif %} value="phone" id="phone" name="filterOption"/>
+                    <label for="phone">Telefone</label>
+                </div>
+            </section>      
+            <section class="sectionFilterInput">
+                <input type="text" class="searchInput" name="filterValue" id="search-input"/>
+
+                <button disabled id="search-button" value="searchFilteredValue" name="searchButton" class="filterButton" type="submit">
+                    <img src={% static '/images/icons/search.svg'%}/>
+                    Pesquisar
+                </button>
+                <button name="searchButton" value="searchAll" class="searchAllButton" type="submit">
+                    Limpar filtro
+                </button>
+            </section>
+        </form>
+
+        <form id="actionCustomerForm" method="post" class="listForm">
+            {% csrf_token %}
+            <div class="containerTable">
+                <table class="listTable">
+                    <thead class="headerTable">
+                        <tr>
+                            <th>Sel</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>       
+                        </tr>
+                    </thead>
+                    <tbody class="bodyTable">
+                        {% for customer in customers %}
+                        <tr>
+                            <td><input type="radio" value="{{customer.id}}" class="selectedItem" name="selectedId"/></td>
+                            <td>{{customer.name}}</td>
+                            <td>{{customer.email}}</td>
+                            <td>{{customer.phone}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <span class="deletedItemMessage" id="deletedItemMessage">{% if anyItemWasDeleted == True %} Item deletado {% endif%}</span>
+
+            <div class="containerActions">
+                <div class="containerActionButtons">
+                    <button name="actionButton" id="edit-button" disabled value="edit" class="editButton">Editar cliente</button>
+
+                    <button name="actionButton" id="delete-button" disabled value="delete" class="deleteButton">Excluir cliente</button>
+                </div>
+
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        
+                    {% if customers.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{customers.previous_page_number}}{% if filterOption != None and filterOption != "Default"%}&filterOption={{filterOption}}{%endif%}{% if searchedValue != None%}&filterValue={{searchedValue}}{%endif%}" tabindex="-1" aria-disabled="true">Anterior</a>
+                    </li>
+                    {%else%}
+                    <li class="page-item disabled" aria-current="page">
+                        <span class="page-link">Anterior</span>
+                    </li>
+                    {% endif %}
+                
+                    {% for num in customers.paginator.page_range %}
+                        {% if num == customers.number %}
+                        <li class="page-item active">
+                            <span class="page-link">{{num}}</span>
+                        </li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="{% url 'customer' %}?page={{num}}{% if filterOption != None and filterOption != "Default"%}&filterOption={{filterOption}}{%endif%}{% if searchedValue != None%}&filterValue={{searchedValue}}{%endif%}
+                            ">{{num}}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                
+                    {% if customers.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{customers.next_page_number}}{% if filterOption != None and filterOption != "Default"%}&filterOption={{filterOption}}{%endif%}{% if searchedValue != None%}&filterValue={{searchedValue}}{%endif%}">Próxima</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Próxima</span>
+                        </li>
+                    {% endif %}
+                
+                    </ul>
+                </nav>
+            </div>
+        </form>
+    </main>
+    <script type="module" src={% static 'scripts/customer.js' %}></script>
+{% endblock content %}

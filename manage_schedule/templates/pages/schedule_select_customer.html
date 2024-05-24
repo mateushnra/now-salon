@@ -1,0 +1,85 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{% block title %}Gerenciar agendamentos{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/schedule.css' %}" >
+{% endblock style%}
+
+{% block content %}
+    <main class="container">
+        <header class="headerSchedule">
+            <h1 class="pageTitle">Selecione um cliente para agendar</h1>
+            <a href="{% url 'schedule_list'%}" class="listButton">Lista de agendamentos</a>
+        </header>
+        <span class="separatorDetail"></span>
+
+        <form id="filterServiceForm" method="get" class="formFilterContainer">
+            {% csrf_token %}
+            <section class="sectionFilterOptions">  
+                <div class="titleFilter">
+                    <img src={% static '/images/icons/filter.svg'%}/>
+                    <strong>Filtrar pesquisa por</strong>
+                </div>
+                <div class="radioInputContainer">
+                    <input type="radio" 
+                    {% if filterOption == "Default" or filterOption == "name" %} checked {% endif %} value="name" id="name" name="filterOption"/>
+                    <label for="name">Nome</label>
+                </div>
+                <div class="radioInputContainer">
+                    <input type="radio" 
+                    {% if filterOption == "email" %} checked {% endif %} value="email" id="email" name="filterOption"/>
+                    <label for="email">Email</label>
+                </div>
+                <div class="radioInputContainer">
+                    <input type="radio" 
+                    {% if filterOption == "phone" %} checked {% endif %} value="phone" id="phone" name="filterOption"/>
+                    <label for="phone">Telefone</label>
+                </div>
+            </section>      
+            <section class="sectionFilterInput">
+                <input type="text" class="searchInput" name="filterValue" id="search-input"/>
+
+                <button disabled id="search-button" value="searchFilteredValue" name="searchButton" class="filterButton" type="submit">
+                    <img src={% static '/images/icons/search.svg'%}/>
+                    Pesquisar
+                </button>
+                <button name="searchButton" value="searchAll" class="searchAllButton" type="submit">
+                    Limpar filtro
+                </button>
+            </section>
+        </form>
+
+        <form id="actionCustomerForm" method="post" class="listForm">
+            {% csrf_token %}
+            <div class="containerTable">
+                <table class="listTable">
+                    <thead class="headerTable">
+                        <tr>
+                            <th>Sel</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>       
+                        </tr>
+                    </thead>
+                    <tbody class="bodyTable">
+                        {% for customer in customers %}
+                        <tr>
+                            <td><input type="radio" value="{{customer.id}}" class="selectedItem" name="selectedId"/></td>
+                            <td>{{customer.name}}</td>
+                            <td>{{customer.email}}</td>
+                            <td>{{customer.phone}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="containerActionButtons">
+                <button id="select-button" disabled class="selectButton">Prosseguir com cliente selecionado</button>
+            </div>
+        </form>
+    </main>
+    <script type="module" src={% static 'scripts/scheduleSelectCustomer.js' %}></script>
+{% endblock content %}

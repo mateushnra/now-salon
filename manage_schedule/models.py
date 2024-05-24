@@ -24,13 +24,12 @@ class Schedule(models.Model):
         "manage_service.Service",
         on_delete=models.PROTECT,
     )
-    createdScheduleDate = models.DateTimeField(auto_now_add=True)
-    scheduleDate = models.DateTimeField(auto_now=False, auto_now_add=False)
+    scheduleDate = models.DateField(auto_now=False, auto_now_add=False)
     scheduleHour = models.CharField(max_length=5, null=False)
     status = models.CharField(max_length=9, choices=SCHEDULE_STATUS_CHOICES, default=1)
-    observation = models.CharField(max_length=200, null=False)
-    cancellationReason = models.CharField(max_length=200, null=False)
-    whoCanceled = models.CharField(max_length=11, choices=USER_CANCELED_CHOICES, default=1)
+    observation = models.CharField(max_length=200, null=False, blank=True)
+    cancellationReason = models.CharField(max_length=200, null=False, blank=True)
+    whoCanceled = models.CharField(max_length=11, choices=USER_CANCELED_CHOICES, default=1, blank=True)
     
     def __str__(self):
         return self.scheduleDate

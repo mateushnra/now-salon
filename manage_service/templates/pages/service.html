@@ -1,0 +1,137 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{% block title %}Gerenciar serviços{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/pages/service.css' %}" >
+{% endblock style%}
+
+{% block content %}
+    <main class="container">
+        <header class="headerService">
+            <h1 class="pageTitle">Lista de serviços</h1>
+            <a href="{% url 'service_register'%}" class="listServiceButton">Cadastrar novo serviço</a>
+        </header class="headerService">
+        <span class="separatorDetail"></span>
+
+        <form id="filterServiceForm" method="get" class="formFilterContainer">
+            {% csrf_token %}
+            <section class="sectionFilterOptions">  
+                <div class="titleFilter">
+                    <img src={% static '/images/icons/filter.svg'%}/>
+                    <strong>Filtrar pesquisa por</strong>
+                </div>
+                <div class="radioInputContainer">
+                    <input type="radio" 
+                    {% if filterOption == "Default" or filterOption == "name" %} checked {% endif %} value="name" id="name" name="filterOption"/>
+                    <label for="name">Nome</label>
+                </div>
+                <div class="radioInputContainer">
+                    <input type="radio" 
+                    {% if filterOption == "duration" %} checked {% endif %} value="duration" id="duration" name="filterOption"/>
+                    <label for="duration">Duração</label>
+                </div>
+                <div class="radioInputContainer">
+                    <input type="radio" 
+                    {% if filterOption == "price" %} checked {% endif %} value="price" id="price" name="filterOption"/>
+                    <label for="price">Preço</label>
+                </div>
+                <div class="radioInputContainer">
+                    <input type="radio" 
+                    {% if filterOption == "status" %} checked {% endif %} value="status" id="status" name="filterOption"/>
+                    <label for="status">Status</label>
+                </div>
+            </section>      
+            <section class="sectionFilterInput">
+                <input type="text" class="searchInput" name="filterValue" id="search-input"/>
+
+                <button disabled id="search-button" value="searchFilteredValue" name="searchButton" class="filterButton" type="submit">
+                    <img src={% static '/images/icons/search.svg'%}/>
+                    Pesquisar
+                </button>
+                <button name="searchButton" value="searchAll" class="searchAllButton" type="submit">
+                    Limpar filtro
+                </button>
+            </section>
+        </form>
+
+        <form id="actionServiceForm" method="post" class="listForm">
+            {% csrf_token %}
+            <div class="containerTable">
+                <table class="listTable">
+                    <thead class="headerTable">
+                        <tr>
+                            <th>Sel</th>
+                            <th>Nome</th>
+                            <th>Tempo Estimado</th>
+                            <th>Preço</th>
+                            <th>Status</th>            
+                        </tr>
+                    </thead>
+                    <tbody class="bodyTable">
+                        {% for service in services %}
+                        <tr>
+                            <td><input type="radio" value="{{service.id}}" class="selectedItem" name="selectedId"/></td>
+                            <td>{{service.name}}</td>
+                            <td>{{service.estimatedTime}}</td>
+                            <td>{{service.price}}</td>
+                            <td>{% if service.status == "1" %} Ativo {% elif service.status == "2" %} Inativo {% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <span class="deletedItemMessage" id="deletedItemMessage">{% if anyItemWasDeleted == True %} Item deletado {% endif%}</span>
+
+            <div class="containerActions">
+                <div class="containerActionButtons">
+                    <button name="actionButton" id="edit-button" disabled value="edit" class="editButton">Editar serviço</button>
+
+                    <button name="actionButton" id="delete-button" disabled value="delete" class="deleteButton">Excluir serviço</button>
+                </div>
+
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        
+                    {% if services.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{services.previous_page_number}}{% if filterOption != None and filterOption != "Default"%}&filterOption={{filterOption}}{%endif%}{% if searchedValue != None%}&filterValue={{searchedValue}}{%endif%}" tabindex="-1" aria-disabled="true">Anterior</a>
+                    </li>
+                    {%else%}
+                    <li class="page-item disabled" aria-current="page">
+                        <span class="page-link">Anterior</span>
+                    </li>
+                    {% endif %}
+                
+                    {% for num in services.paginator.page_range %}
+                        {% if num == services.number %}
+                        <li class="page-item active">
+                            <span class="page-link">{{num}}</span>
+                        </li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="{% url 'service' %}?page={{num}}{% if filterOption != None and filterOption != "Default"%}&filterOption={{filterOption}}{%endif%}{% if searchedValue != None%}&filterValue={{searchedValue}}{%endif%}
+                            ">{{num}}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                
+                    {% if services.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{services.next_page_number}}{% if filterOption != None and filterOption != "Default"%}&filterOption={{filterOption}}{%endif%}{% if searchedValue != None%}&filterValue={{searchedValue}}{%endif%}">Próxima</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Próxima</span>
+                        </li>
+                    {% endif %}
+                
+                    </ul>
+                </nav>
+            </div>
+        </form>
+    </main>
+    <script type="module" src={% static 'scripts/service.js' %}></script>
+{% endblock content %}
