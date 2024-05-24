@@ -4,6 +4,7 @@
 @import "../components/radioInput.css";
 @import "../components/listTable.css";
 @import "../components/filterForm.css";
+@import "../components/pagination.css";
 
 .container{
     display: grid;
@@ -36,7 +37,14 @@
 
 .formContainer{
     display: flex;
+    flex-direction: column;
     gap:2.4rem;
+}
+
+.formData{
+    display: flex;
+    gap:3rem;
+    flex-wrap: wrap;
 }
 
 .sectionData{
@@ -104,11 +112,29 @@
     font-weight: 600;
 }
 
+.containerCustomerSelected{
+    display: block;
+    background: var(--color-gray-1000);
+    color: var(--color-white);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.containerCustomerSelected > strong{
+    font-weight: 500;
+}
+
 .errorMessage{
     display: block;
     color: var(--color-red-400);
     font-size: 1.2rem;
     font-weight: 400;
+}
+
+.hide{
+    display: none !important;
 }
 
 .alertPassword{
@@ -121,6 +147,17 @@
 .registrationStatus{
     font-size: 1.2rem;
     color: var(--color-red-400)
+}
+
+.sectionEmployeeServices{
+    width: 340px;
+}
+
+.containerActions{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap:1rem;
 }
 
 @media (max-width: 650px) {
@@ -140,5 +177,9 @@
 
     .pageTitle{
         font-size: 2.2rem;
+    }
+
+    .sectionEmployeeServices{
+        width: 270px;
     }
 }

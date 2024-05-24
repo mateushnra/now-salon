@@ -1,0 +1,35 @@
+.pagination{
+    display: flex;
+    gap:1rem;
+    list-style: none;
+}
+
+.page-item{
+    border: 1px solid var(--color-gray-500);
+    padding: 0.4rem;
+    border-radius: 5px;
+}
+
+.page-link{
+    text-decoration: none;
+    color:var(--color-gray-900);
+}
+
+.disabled{
+    border: 1px solid var(--color-gray-200);
+}
+
+.disabled > .page-link{
+    text-decoration: none;
+    color:var(--color-gray-600)
+}
+
+.active > .page-link{
+    text-decoration: none;
+    color:var(--color-primary-500);
+    font-weight: 500;
+}
+
+.active {
+    border: 1px solid var(--color-primary-500);
+}

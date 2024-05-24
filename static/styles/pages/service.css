@@ -4,6 +4,7 @@
 @import "../components/radioInput.css";
 @import "../components/listTable.css";
 @import "../components/filterForm.css";
+@import "../components/pagination.css";
 
 .container{
     display: grid;
@@ -102,6 +103,13 @@
     color: var(--color-green-600);
     font-size: 1.2rem;
     font-weight: 600;
+}
+
+.containerActions{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap:1rem;
 }
 
 @media (max-width: 650px) {

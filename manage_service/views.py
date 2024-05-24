@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Service
 from .forms import ServiceForm
+from django.core.paginator import Paginator
 
 def service(request):
     if "customer_id" in request.session:
@@ -18,8 +19,11 @@ def service(request):
 
         services = Service.objects.all()
 
-        searchedOption = request.GET.get('searchButton')
-        filterOption = "Default"
+        filterOption = request.GET.get('filterOption')
+        searchedValue = request.GET.get('filterValue')
+
+        if(filterOption == None):
+            filterOption = "Default"
 
         if request.method == "POST":
             actionServiceSelected = request.POST.get('actionButton')
@@ -33,11 +37,7 @@ def service(request):
 
                     context["anyItemWasDeleted"] = True
                     
-        elif (searchedOption and searchedOption == "searchFilteredValue"):
-
-            filterOption = request.GET.get('filterOption')
-            searchedValue = request.GET.get('filterValue')
-
+        elif (filterOption):
             match filterOption:
                 case "name":
                     services = services.filter(name__icontains=searchedValue)
@@ -53,7 +53,12 @@ def service(request):
 
                     services = services.filter(status__icontains=searchedValue)
 
+        paginator = Paginator(services,2)
+        page = request.GET.get('page')
+        services = paginator.get_page(page)
+
         context["services"] = services
+        context["searchedValue"] = searchedValue
         context["filterOption"] = filterOption
         
     else:

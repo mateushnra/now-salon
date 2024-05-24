@@ -1,9 +1,9 @@
 from django.shortcuts import render
-
 from django.shortcuts import render, redirect
 from .models import Employee
 from manage_service.models import Service
 from .forms import EmployeeForm
+from django.core.paginator import Paginator
 
 def employee_list(request):
     if "customer_id" in request.session:
@@ -21,8 +21,11 @@ def employee_list(request):
 
         employees = Employee.objects.all()
 
-        searchedOption = request.GET.get('searchButton')
-        filterOption = "Default"
+        filterOption = request.GET.get('filterOption')
+        searchedValue = request.GET.get('filterValue')
+
+        if(filterOption == None):
+            filterOption = "Default"
 
         if request.method == "POST":
             actionEmployeeSelected = request.POST.get('actionButton')
@@ -37,11 +40,7 @@ def employee_list(request):
 
                     context["anyItemWasDeleted"] = True
                     
-        elif (searchedOption and searchedOption == "searchFilteredValue"):
-
-            filterOption = request.GET.get('filterOption')
-            searchedValue = request.GET.get('filterValue')
-
+        elif (filterOption):
             match filterOption:
                 case "register":
                     employees = employees.filter(id__icontains=searchedValue)
@@ -59,7 +58,12 @@ def employee_list(request):
 
                     employees = employees.filter(accessLevel__icontains=searchedValue)
             
+        paginator = Paginator(employees, 2)
+        page = request.GET.get('page')
+        employees = paginator.get_page(page)
+
         context["employees"] = employees
+        context["searchedValue"] = searchedValue
         context["filterOption"] = filterOption
         
     else:

@@ -85,10 +85,51 @@
 
             <span class="deletedItemMessage" id="deletedItemMessage">{% if anyItemWasDeleted == True %} Item deletado {% endif%}</span>
 
-            <div class="containerActionButtons">
-                <button name="actionButton" id="edit-button" disabled value="edit" class="editButton">Editar serviço</button>
+            <div class="containerActions">
+                <div class="containerActionButtons">
+                    <button name="actionButton" id="edit-button" disabled value="edit" class="editButton">Editar serviço</button>
 
-                <button name="actionButton" id="delete-button" disabled value="delete" class="deleteButton">Excluir serviço</button>
+                    <button name="actionButton" id="delete-button" disabled value="delete" class="deleteButton">Excluir serviço</button>
+                </div>
+
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        
+                    {% if services.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{services.previous_page_number}}{% if filterOption != None and filterOption != "Default"%}&filterOption={{filterOption}}{%endif%}{% if searchedValue != None%}&filterValue={{searchedValue}}{%endif%}" tabindex="-1" aria-disabled="true">Anterior</a>
+                    </li>
+                    {%else%}
+                    <li class="page-item disabled" aria-current="page">
+                        <span class="page-link">Anterior</span>
+                    </li>
+                    {% endif %}
+                
+                    {% for num in services.paginator.page_range %}
+                        {% if num == services.number %}
+                        <li class="page-item active">
+                            <span class="page-link">{{num}}</span>
+                        </li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="{% url 'service' %}?page={{num}}{% if filterOption != None and filterOption != "Default"%}&filterOption={{filterOption}}{%endif%}{% if searchedValue != None%}&filterValue={{searchedValue}}{%endif%}
+                            ">{{num}}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                
+                    {% if services.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{services.next_page_number}}{% if filterOption != None and filterOption != "Default"%}&filterOption={{filterOption}}{%endif%}{% if searchedValue != None%}&filterValue={{searchedValue}}{%endif%}">Próxima</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Próxima</span>
+                        </li>
+                    {% endif %}
+                
+                    </ul>
+                </nav>
             </div>
         </form>
     </main>

@@ -8,7 +8,7 @@ class Customer(models.Model):
     password = models.CharField(max_length=200)
     
     def __str__(self):
-        return self.email
+        return self.name
     
     def save(self, *args, **kwargs):
         self.password = make_password(self.password)

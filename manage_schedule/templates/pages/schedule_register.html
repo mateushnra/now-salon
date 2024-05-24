@@ -1,53 +1,94 @@
 {% extends 'baseEmployee.html'%}
 {% load static %}
 
-{% block title %}Gerenciar clientes{% endblock title %}
+{% block title %}Gerenciar agendamentos{% endblock title %}
 
 {% block style %}
-    <link rel="stylesheet" href="{% static 'styles/pages/customer.css' %}" >
+    <link rel="stylesheet" href="{% static 'styles/pages/schedule.css' %}" >
 {% endblock style%}
 
 {% block content %}
     <main class="container">
-        <header class="headerCustomer">
-            <h1 class="pageTitle">Incluir novo cliente</h1>
-            <a href="{% url 'customer' %}" class="listButton">Visualizar clientes</a>
+        <header class="headerSchedule">
+            <h1 class="pageTitle">Incluir novo agendamento</h1>
+            <a href="{% url 'schedule_select_customer' %}" class="deleteButton">Voltar</a>
         </header>
         <span class="separatorDetail"></span>
 
-        <form id="createCustomerForm" method="post" class="formContainer">
+        <div class="containerCustomerSelected">Cliente selecionado: <strong>{{customerSelected.name}}</strong></div>
+
+        <form id="createScheduleForm" method="post" class="formContainer">
             {% csrf_token %}
-            <section class="sectionData">  
-                {% if customerCreated == True %}<span class="successMessage">Cliente cadastrado com sucesso!</span>{% endif %} 
+            <div class="formData">
+                <section class="sectionData">  
+                    <input type="hidden" name="idCustomer" value="{{customerSelected.id}}"/>
 
-                <div class="fieldsData">
-                    <div class="inputContainer">
-                        <label for="name">Nome</label>
-                        <input type="text" id="name" name="name"/>
-                        <span id="error-name"></span>
+                    <div class="fieldsData">
+                        <div class="inputContainer">
+                            <label for="idEmployee">Funcionario</label>
+                            <select id="idEmployee" name="idEmployee">
+                                {% for choice in form.idEmployee.field.choices %}
+                                    <option value={{choice.0}}>{{choice.1}}</option>
+                                {% endfor %}
+                            </select>
+                            <span id="error-employee"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="idService">Serviço</label>
+                            <select id="idService" name="idService">
+                                {% for choice in form.idService.field.choices %}
+                                    <option value={{choice.0}}>{{choice.1}}</option>
+                                {% endfor %}
+                            </select>
+                            <span id="error-service"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="scheduleDate">Data do agendamento</label>
+                            <input type="date" id="scheduleDate" name="scheduleDate"/>
+                            <span id="error-scheduleDate"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="scheduleHour">Horário do agendamento</label>
+                            <input type="time" id="scheduleHour" name="scheduleHour"/>
+                            <span id="error-scheduleHour"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="observation">Observação</label>
+                            <textarea id="observation" name="observation"></textarea>
+                            <span id="error-observation"></span>
+                        </div>
+                        {% if scheduleCreated == True %}<span class="successMessage">Agendamento cadastrado com sucesso!</span>{% endif %} 
                     </div>
-                    <div class="inputContainer">
-                        <label for="email">Email</label>
-                        <input type="text" id="email" name="email"/>
-                        <span id="error-email"></span>
+                </section>
+                <section class="sectionEmployeeServices">
+                    <div class="fieldsData">
+                        <div class="inputContainer">
+                            <label for="status">Status do serviço</label>
+                            <select id="status" name="status">
+                                <option selected value="1">Pendente</option>
+                                <option value="2">Concluído</option>
+                                <option value="3">Cancelado</option>
+                            </select>
+                            <span id="error-status"></span>
+                        </div>
+                        <div id="cancellationReasonContainer" class="inputContainer hide">
+                            <label for="cancellationReason">Motivo cancelamento</label>
+                            <textarea id="cancellationReason" name="cancellationReason"></textarea>
+                            <span id="error-cancellationReason"></span>
+                        </div>
+                        <div id="whoCanceledContainer" class="inputContainer hide">
+                            <label for="whoCanceled">Quem cancelou</label>
+                            <select id="whoCanceled" name="whoCanceled">
+                                <option selected value="1">Cliente</option>
+                                <option value="2">Funcionário</option>
+                            </select>
+                            <span id="error-whoCanceled"></span>
+                        </div>
                     </div>
-                    <div class="inputContainer">
-                        <label for="phone">Telefone</label>
-                        <input type="tel" id="phone" name="phone" maxlength="13"/>
-                        <span id="error-phone"></span>
-                    </div>
-                    <div class="inputContainer">
-                        <label for="password">Senha</label>
-                        <input type="password" id="password" name="password"/>
-                        <span id="error-password"></span>
-                    </div>
-                </div>
-
-                <button class="createButton" type="submit">Cadastrar Cliente</button>
-
-                <div id="error-form" class="registrationStatus"></div>
-            </section>            
+                </section>
+            </div>   
+            <button class="createButton" type="submit">Cadastrar agendamento</button>      
         </form>
     </main>
-    <script type="module" src={% static 'scripts/customer_register.js' %}></script>
+    <script type="module" src={% static 'scripts/schedule_register.js' %}></script>
 {% endblock content %}

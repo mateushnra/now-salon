@@ -1,55 +1,94 @@
 {% extends 'baseEmployee.html'%}
 {% load static %}
 
-{% block title %}Gerenciar clientes{% endblock title %}
+{% block title %}Gerenciar agendamentos{% endblock title %}
 
 {% block style %}
-    <link rel="stylesheet" href="{% static 'styles/pages/customer.css' %}" >
+    <link rel="stylesheet" href="{% static 'styles/pages/schedule.css' %}" >
 {% endblock style%}
 
 {% block content %}
     <main class="container">
-        <header class="headerCustomer">
-            <h1 class="pageTitle">Editando cliente: {{customerSelected.name}}</h1>
+        <header class="headerSchedule">
+            <h1 class="pageTitle">Editando agendamento</h1>
+            <a href="{% url 'schedule_list' %}" class="deleteButton">Cancelar</a>
         </header>
         <span class="separatorDetail"></span>
 
-        <form id="editCustomerForm" method="post" class="formContainer">
+        <div class="containerCustomerSelected">Cliente: <strong>{{scheduleSelected.idCustomer}}</strong></div>
+
+        <form id="createScheduleForm" method="post" class="formContainer">
             {% csrf_token %}
-            <section class="sectionData">  
+            <div class="formData">
+                <section class="sectionData">  
+                    <input type="hidden" name="idCustomer" value="{{scheduleSelected.idCustomer}}"/>
 
-                <div class="fieldsData">
-                    <div class="inputContainer">
-                        <label for="name">Nome</label>
-                        <input type="text" id="name" value="{{customerSelected.name}}" name="name"/>
-                        <span id="error-name"></span>
+                    <div class="fieldsData">
+                        <div class="inputContainer">
+                            <label for="idEmployee">Funcionario</label>
+                            <select id="idEmployee" name="idEmployee">
+                                {% for choice in form.idEmployee.field.choices %}
+                                    <option {% if scheduleSelected.idEmployee_id == choice.0 %}selected{% endif %} value={{choice.0}}>{{choice.1}}</option>
+                                {% endfor %}
+                            </select>
+                            <span id="error-employee"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="idService">Serviço</label>
+                            <select id="idService" name="idService">
+                                {% for choice in form.idService.field.choices %}
+                                    <option {% if scheduleSelected.idService_id == choice.0 %}selected{% endif %} value={{choice.0}}>{{choice.1}}</option>
+                                {% endfor %}
+                            </select>
+                            <span id="error-service"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="scheduleDate">Data do agendamento</label>
+                            <input type="date" value="{{scheduleSelected.scheduleDate|date:'Y-m-d'}}" id="scheduleDate" name="scheduleDate"/>
+                            <span id="error-scheduleDate"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="scheduleHour">Horário do agendamento</label>
+                            <input type="time" value="{{scheduleSelected.scheduleHour}}" id="scheduleHour" name="scheduleHour"/>
+                            <span id="error-scheduleHour"></span>
+                        </div>
+                        <div class="inputContainer">
+                            <label for="observation">Observação</label>
+                            <textarea id="observation" name="observation">{{scheduleSelected.observation}}</textarea>
+                            <span id="error-observation"></span>
+                        </div>
+                        {% if scheduleCreated == True %}<span class="successMessage">Agendamento cadastrado com sucesso!</span>{% endif %} 
                     </div>
-                    <div class="inputContainer">
-                        <label for="email">Email</label>
-                        <input type="text" id="email" value="{{customerSelected.email}}" name="email"/>
-                        <span id="error-email"></span>
+                </section>
+                <section class="sectionEmployeeServices">
+                    <div class="fieldsData">
+                        <div class="inputContainer">
+                            <label for="status">Status do serviço</label>
+                            <select id="status" name="status">
+                                <option {% if scheduleSelected.status == "1" %}selected{% endif %} value="1">Pendente</option>
+                                <option {% if scheduleSelected.status == "2" %}selected{% endif %} value="2">Concluído</option>
+                                <option {% if scheduleSelected.status == "3" %}selected{% endif %} value="3">Cancelado</option>
+                            </select>
+                            <span id="error-status"></span>
+                        </div>
+                        <div id="cancellationReasonContainer" class="inputContainer hide">
+                            <label for="cancellationReason">Motivo cancelamento</label>
+                            <textarea id="cancellationReason" name="cancellationReason">{{scheduleSelected.cancellationReason}}</textarea>
+                            <span id="error-cancellationReason"></span>
+                        </div>
+                        <div id="whoCanceledContainer" class="inputContainer hide">
+                            <label for="whoCanceled">Quem cancelou</label>
+                            <select id="whoCanceled" name="whoCanceled">
+                                <option {% if scheduleSelected.whoCanceled == "1" %}selected{% endif %} value="1">Cliente</option>
+                                <option {% if scheduleSelected.whoCanceled == "2" %}selected{% endif %} value="2">Funcionário</option>
+                            </select>
+                            <span id="error-whoCanceled"></span>
+                        </div>
                     </div>
-                    <div class="inputContainer">
-                        <label for="phone">Telefone</label>
-                        <input type="tel" id="phone" value="{{customerSelected.phone}}" name="phone" maxlength="13"/>
-                        <span id="error-phone"></span>
-                    </div>
-                    <div class="inputContainer">
-                        <label for="password">Senha</label>
-                        <div class="alertPassword"><img src={% static '/images/icons/alert.svg'%}/>Deixar a senha em branco mantém a senha atual</div>
-                        <input type="password" id="password" name="password"/>
-                        <span id="error-password"></span>
-                    </div>
-                </div>
-
-                <div class="containerActionButtons">
-                    <button class="createButton" type="submit">Confirmar e editar</button>
-                    <a class="deleteButton" href="{% url 'customer' %}">Cancelar</a>
-                </div>
-
-                {% if emailAlreadyExists == True %}<span class="errorMessage">Email já existe no sistema, insira outro email!</span>{% endif %} 
-            </section>            
+                </section>
+            </div>   
+            <button class="createButton" type="submit">Confirmar e editar</button>      
         </form>
     </main>
-    <script type="module" src={% static 'scripts/customer_edit.js' %}></script>
+    <script type="module" src={% static 'scripts/schedule_register.js' %}></script>
 {% endblock content %}

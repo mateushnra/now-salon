@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Customer
 from .forms import CustomerForm
+from django.core.paginator import Paginator
 
 def customer(request):
     if "customer_id" in request.session:
@@ -18,8 +19,11 @@ def customer(request):
 
         customers = Customer.objects.all()
 
-        searchedOption = request.GET.get('searchButton')
-        filterOption = "Default"
+        filterOption = request.GET.get('filterOption')
+        searchedValue = request.GET.get('filterValue')
+
+        if(filterOption == None):
+            filterOption = "Default"
 
         if request.method == "POST":
             actionCustomerSelected = request.POST.get('actionButton')
@@ -33,11 +37,7 @@ def customer(request):
 
                     context["anyItemWasDeleted"] = True
                     
-        elif (searchedOption and searchedOption == "searchFilteredValue"):
-
-            filterOption = request.GET.get('filterOption')
-            searchedValue = request.GET.get('filterValue')
-
+        elif (filterOption):
             match filterOption:
                 case "name":
                     customers = customers.filter(name__icontains=searchedValue)
@@ -46,7 +46,12 @@ def customer(request):
                 case "phone":
                    customers = customers.filter(phone__icontains=searchedValue)
             
+        paginator = Paginator(customers, 2)
+        page = request.GET.get('page')
+        customers = paginator.get_page(page)
+
         context["customers"] = customers
+        context["searchedValue"] = searchedValue
         context["filterOption"] = filterOption
         
     else:
