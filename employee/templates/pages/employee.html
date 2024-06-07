@@ -13,4 +13,27 @@
         <span class="separatorDetail"></span>
         <h2 class="titleWeekSchedules">Serviços agendados para você esta semana</h2>
     </main>
+    <article>
+        {% if pending_schedules %}
+            <ul class="weekSchedulesList">
+                {% for schedule in pending_schedules %}
+                    <li>
+                        <span>
+                            <strong>Cliente:</strong> {{ schedule.idCustomer.name }}
+                            <strong>Data:</strong> {{ schedule.scheduleDate|date:"SHORT_DATE_FORMAT" }} às {{ schedule.scheduleHour }}
+                        </span>
+                        <span>
+                            <strong>Serviço:</strong> {{ schedule.idService.name }}
+                            <strong>Valor:</strong> {{ schedule.idService.price }}  
+                        </span>
+                        <span class="containerObservation">
+                            <strong>Observação:</strong> {{ schedule.observation }}
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Você não tem agendamentos pendentes para esta semana.</p>
+        {% endif %}
+    </article>
 {% endblock content %}

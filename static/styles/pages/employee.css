@@ -35,3 +35,86 @@
     font-weight: 400;
     color: var(--color-gray-800);
 }
+
+/* Estilos gerais da lista */
+.weekSchedulesList {
+    list-style: none;
+    padding: 0;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Estilos de cada item da lista (card) */
+.weekSchedulesList li {
+    background-color: #f0f0f0; /* Cor de fundo cinza claro */
+    border-radius: 8px; /* Bordas arredondadas */
+    padding: 20px;
+    width: calc(50% - 10px); /* Largura responsiva (dois itens por linha) */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+/* Estilos do cabeçalho do card */
+.weekSchedulesList li span:first-child {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+    color: white;
+    background-color: #074754;
+    padding: 10px;
+    border-radius: 8px 8px 0 0; 
+}
+
+.weekSchedulesList li span:last-child {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.weekSchedulesList li strong {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* Estilos do ícone do relógio */
+.weekSchedulesList li .clock-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-image: url('caminho/para/o/icone/do/relogio.png'); /* Substitua pelo caminho correto */
+    background-size: cover;
+    margin-right: 10px;
+}
+
+/* Estilos dos botões */
+.weekSchedulesList li button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.weekSchedulesList li button.concluir {
+    background-color: #2ecc71; /* Verde */
+    color: white;
+}
+
+.weekSchedulesList li button.cancelar {
+    background-color: #e74c3c; /* Vermelho */
+    color: white;
+}
+
+.containerObservation {
+    padding-top: 20px;
+}
+
+/* Estilos para telas menores (responsividade) */
+@media (max-width: 768px) {
+    .weekSchedulesList li {
+        width: 100%; /* Um item por linha em telas menores */
+    }    
+}
