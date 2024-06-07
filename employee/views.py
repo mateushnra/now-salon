@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
 from manage_employee.models import Employee
+from manage_schedule.models import Schedule
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth.hashers import check_password
 from django.urls import reverse
+from django.utils import timezone
+from datetime import timedelta
+from django.db.models import Q
 import json
 
 def portal(request):
@@ -46,6 +50,20 @@ def employee(request):
 
     if "employee_id" in request.session:
         context = {"employeeLoggedIn": True, "employeeAccessLevel": request.session["employee_access_level"], "employeeName": request.session["employee_name"]}
+
+        schedules = Schedule.objects.filter(idEmployee_id=request.session["employee_id"])
+
+        today = timezone.now().date()
+        one_week_later = today + timedelta(days=7) 
+
+        pending_schedules = schedules.filter(
+            Q(status='1') & 
+            Q(scheduleDate__gte=today) & 
+            Q(scheduleDate__lte=one_week_later)
+        )
+
+        context["schedules"] = schedules 
+        context["pending_schedules"] = pending_schedules 
     else:
         return redirect('/')
         

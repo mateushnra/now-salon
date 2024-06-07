@@ -6,7 +6,7 @@
             <a href="{% url 'employee'%}" class="logoLight">Now Salon</a>
             <ul class="navManageListContainer">
                 <li>
-                    <a href="#myservices">Meus serviços</a>
+                    <a href="{% url 'employee'%}">Meus serviços</a>
                 </li>
                 {% if employeeAccessLevel == '1' %}
                     <li id="item-container-manage" class="navManageListContainer">
